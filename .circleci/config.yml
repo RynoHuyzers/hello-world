@@ -31,6 +31,7 @@ jobs:
           name: Install dependencies
           command: |
             mkdir tmp
+            ls
             cd hello_world
             pip install -r requirements.txt
             cd ..
