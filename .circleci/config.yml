@@ -32,8 +32,8 @@ jobs:
           command: |
             pip install -r requirements.txt
             cd ..
-            zip -r9 /function.zip project/*
-            aws s3 cp /function.zip s3://deployments-pleb/function.zip
+            zip -r9 function.zip hello_world/*
+            aws s3 cp function.zip s3://deployments-pleb/function.zip
 
       # Step 4: Deploy code
       - run:
