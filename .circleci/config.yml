@@ -41,7 +41,7 @@ jobs:
           command: |
             aws lambda update-function-configuration \
               --function-name hello_world \
-              --code S3Bucket=$S3_BUCKET,S3Key=function.zip
+              --code S3Bucket=deployments-pleb,S3Key=function.zip
       # Step 5: Test function
       - run:
           name: Test function
