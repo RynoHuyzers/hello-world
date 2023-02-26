@@ -1,8 +1,14 @@
 version: 2.1
+
 workflows:
   build-and-deploy:
     jobs:
       - build-and-deploy:
+          filters:
+            branches:
+              only:
+                - '*'
+
 jobs:
   build-and-deploy:
     docker:
