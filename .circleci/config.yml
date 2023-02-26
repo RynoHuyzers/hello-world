@@ -30,9 +30,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            mkdir tmp
             ls
-            cd hello_world
+            cd ..
+            ls
             pip install -r requirements.txt
             cd ..
             zip -r9 tmp/function.zip hello_world/*
