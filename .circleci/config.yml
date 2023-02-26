@@ -30,7 +30,12 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            mkdir tmp
+            cd hello_world
             pip install -r requirements.txt
+            cd ..
+            zip -r9 tmp/function.zip hello_world/*
+            aws s3 cp tmp/function.zip s3://deployments-pleb/function.zip
 
       # Step 2: Package code
       - run:
@@ -38,12 +43,6 @@ jobs:
           command: |
             cd ~
             zip -r ~/function.zip .
-
-      # Step 3: Download code
-      - run:
-          name: Download code
-          command: |
-            aws s3 cp s3://deployments-pleb/function.zip ~/
 
       # Step 4: Deploy code
       - run:
