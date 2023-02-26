@@ -1,48 +1,51 @@
-version: 2
+version: 2.1
 jobs:
-  build:
-    docker:
-      - image: circleci/python:3.7
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-  deploy:
-    docker:
-      - image: circleci/python:3.7
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-      - run:
-          name: Install serverless
-          command: |
-            npm install -g serverless
-      - run:
-          name: Deploy
-          command: |
-            serverless deploy --stage $CIRCLE_BRANCH
-workflows:
-  version: 2
   build-and-deploy:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - master
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - master
+    docker:
+      - image: circleci/python:3.9
+
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+
+    steps:
+      - checkout
+
+      # Step 1: Install dependencies
+      - run:
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
+
+      # Step 2: Package code
+      - run:
+          name: Package code
+          command: |
+            zip -r $CIRCLE_ARTIFACTS/function.zip .
+
+      # Step 3: Download code
+      - run:
+          name: Download code
+          command: |
+            aws s3 cp s3://my-bucket/function.zip .
+
+      # Step 4: Deploy code
+      - run:
+          name: Deploy code
+          command: |
+            aws lambda update-function-code \
+              --function-name my-function \
+              --zip-file fileb://function.zip
+
+      # Step 5: Test function
+      - run:
+          name: Test function
+          command: |
+            echo '{}' | aws lambda invoke \
+              --function-name my-function \
+              --payload file://dev/null \
+              response.json
+
+      # Step 6: Store artifacts
+      - store_artifacts:
+          path: response.json
+          destination: response.json
