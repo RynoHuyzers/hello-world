@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Package code
           command: |
-            cd ~/hello_world
+            cd ~
             zip -r ~/function.zip .
 
       # Step 3: Download code
@@ -51,7 +51,7 @@ jobs:
           command: |
             aws lambda update-function-code \
               --function-name hello_world \
-              --zip-file fileb://~/function.zip
+              --zip-file s3://deployments-pleb/function.zip
       # Step 5: Test function
       - run:
           name: Test function
