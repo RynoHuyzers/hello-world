@@ -19,6 +19,12 @@ jobs:
 
     steps:
       - checkout
+      # Step 1: Setup job
+      - run:
+          name: Setup job
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y awscli
 
       # Step 1: Install dependencies
       - run:
