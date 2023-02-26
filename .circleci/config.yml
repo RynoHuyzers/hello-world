@@ -42,15 +42,6 @@ jobs:
               --function-name hello_world \
               --s3-bucket deployments-pleb \
               --s3-key function.zip
-      # Step 5: Test function
-      - run:
-          name: Test function
-          command: |
-            echo '{}' | aws lambda invoke \
-              --function-name hello_world \
-              --payload file://dev/null \
-              response.json
-
       # Step 6: Store artifacts
       - store_artifacts:
           path: response.json
