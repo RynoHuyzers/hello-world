@@ -26,14 +26,14 @@ jobs:
       - run:
           name: Download code
           command: |
-            aws s3 cp s3://my-bucket/function.zip .
+            aws s3 cp s3://deployments-pleb/function.zip .
 
       # Step 4: Deploy code
       - run:
           name: Deploy code
           command: |
             aws lambda update-function-code \
-              --function-name my-function \
+              --function-name hello_world \
               --zip-file fileb://function.zip
 
       # Step 5: Test function
@@ -41,7 +41,7 @@ jobs:
           name: Test function
           command: |
             echo '{}' | aws lambda invoke \
-              --function-name my-function \
+              --function-name hello_world \
               --payload file://dev/null \
               response.json
 
