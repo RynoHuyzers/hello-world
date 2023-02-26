@@ -31,8 +31,7 @@ jobs:
           name: Install dependencies
           command: |
             pip install -r requirements.txt
-            cd ..
-            zip -r9 function.zip . -i project/*
+            zip -r9 function.zip . 
             aws s3 cp function.zip s3://deployments-pleb/function.zip
 
       # Step 4: Deploy code
